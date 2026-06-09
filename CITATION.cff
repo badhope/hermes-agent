@@ -2,12 +2,11 @@ cff-version: 1.2.0
 message: >-
   If you use this software in academic work, please cite it using the
   metadata below.
-title: hermes-agent
+title: hermes-agent (fork)
 authors:
   - family-names: badhope
     given-names: badhope
     alias: badhope
-    orcid: https://orcid.org/0000-0000-0000-0000
 identifiers:
   - type: url
     value: https://github.com/badhope/hermes-agent
@@ -16,6 +15,15 @@ type: software
 url: https://github.com/badhope/hermes-agent
 repository-code: https://github.com/badhope/hermes-agent
 keywords:
-  - open-source, software
+  - agent
+  - ai
+  - ai-agent
+  - framework
+  - llm
+  - badhope
+  - mcp
+  - open-source
+  - pypi
+  - supply-chain
 abstract: >-
-  The agent that grows with you
+  My fork of Nous Research's hermes-agent. Pulled in to study the TUI / supply-chain / MCP patterns. I don't ship fixes upstream from this fork — issues belong to the original repo.
