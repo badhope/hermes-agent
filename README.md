@@ -1,3 +1,15 @@
+# hermes-agent (my fork)
+
+> **Fork notice.** This is my personal mirror of
+> [Nous Research / hermes-agent](https://github.com/nousresearch/hermes-agent).
+> I don't accept issues or PRs here — go to the original repo.
+> I track it here so I can pin the version I study, and so I have a
+> local history when I want to diff against upstream.
+
+The rest of this README is upstream's own description.
+
+---
+
 <p align="center">
   <img src="assets/banner.png" alt="Hermes Agent" width="100%">
 </p>
