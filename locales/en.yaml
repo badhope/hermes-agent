@@ -52,6 +52,7 @@ gateway:
     session_only_hint:      "_(session only — add `--global` to persist)_"
     current_label:          "Current: `{model}` on {provider}"
     current_tag:            " (current)"
+    fallback_active_note:   "⚠️ Primary is unavailable — using fallback (`{model}` on {provider})"
     more_models_suffix:     " (+{count} more)"
     usage_switch_model:     "`/model <name>` — switch model"
     usage_switch_provider:  "`/model <name> --provider <slug>` — switch provider"
