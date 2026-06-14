@@ -1456,10 +1456,17 @@ class MCPServerTask:
                 f"MCP server '{self.name}': {malware_error}"
             )
 
+        # Windows pipe reads are not guaranteed to be UTF-8-aligned, so the
+        # SDK's strict default crashes the connection on a bad byte at a
+        # chunk boundary.  Strict is the right default elsewhere — it surfaces
+        # real encoding bugs (#46099).
+        encoding_error_handler = "replace" if sys.platform == "win32" else "strict"
+
         server_params = StdioServerParameters(
             command=command,
             args=args,
             env=safe_env if safe_env else None,
+            encoding_error_handler=encoding_error_handler,
         )
 
         sampling_kwargs = self._sampling.session_kwargs() if self._sampling else {}
