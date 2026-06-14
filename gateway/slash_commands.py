@@ -1005,6 +1005,29 @@ class GatewaySlashCommandsMixin:
             current_base_url = override.get("base_url", current_base_url)
             current_api_key = override.get("api_key", current_api_key)
 
+        # If the cached agent flipped onto a fallback, show the model the
+        # user is actually talking to instead of the config primary.  Lost
+        # in the v0.15.0 refactor (#45970).
+        fallback_active = False
+        try:
+            _cache_lock = getattr(self, "_agent_cache_lock", None)
+            _cache = getattr(self, "_agent_cache", None)
+            if _cache_lock is not None and _cache is not None:
+                with _cache_lock:
+                    _entry = _cache.get(session_key)
+                _agent = _entry[0] if isinstance(_entry, tuple) else _entry
+                if _agent is not None and getattr(_agent, "_fallback_activated", False):
+                    _active_model = getattr(_agent, "model", "") or current_model
+                    _active_provider = getattr(_agent, "provider", "") or current_provider
+                    if _active_model and _active_model != current_model:
+                        fallback_active = True
+                        current_model = _active_model
+                    if _active_provider and _active_provider != current_provider:
+                        fallback_active = True
+                        current_provider = _active_provider
+        except Exception as exc:
+            logger.debug("Fallback probe for /model failed: %s", exc)
+
         # No args: show interactive picker (Telegram/Discord) or text list
         if not model_input and not explicit_provider:
             # Try interactive picker if the platform supports it
@@ -1163,6 +1186,16 @@ class GatewaySlashCommandsMixin:
             # Fallback: text list (for platforms without picker or if picker failed)
             provider_label = get_label(current_provider)
             lines = [t("gateway.model.current_label", model=current_model or "unknown", provider=provider_label), ""]
+
+            if fallback_active:
+                lines.append(
+                    t(
+                        "gateway.model.fallback_active_note",
+                        model=current_model or "unknown",
+                        provider=provider_label,
+                    )
+                )
+                lines.append("")
 
             try:
                 providers = list_authenticated_providers(
